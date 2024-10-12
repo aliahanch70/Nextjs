@@ -1,0 +1,29 @@
+[
+  {
+    "id": 2,
+    "name": "T-shirt",
+    "price": 19.99,
+    "image": "/men_tshirt_1.jpg",
+    "category": "fashion"
+  },
+  {
+    "id": 3,
+    "name": "Smartphone",
+    "price": 599.99,
+    "image": "/iphone13.jpg",
+    "category": "electronics"
+  },
+  {
+    "id": 4,
+    "name": "T-shirt",
+    "price": 19.99,
+    "image": "/men_tshirt_1.jpg",
+    "category": "fashion"
+  },
+  {
+    "id": 5,
+    "name": "ad",
+    "price": 11,
+    "image": "/uploads/1728721335324.jpg"
+  }
+]

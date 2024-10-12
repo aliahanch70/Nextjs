@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "Laptop",
+    "price": 999.99,
+    "image": "/MicrosoftSurfaceLaptop3.jpg",
+    "category": "electronics"
+  },
+  {
+    "id": 2,
+    "name": "T-shirt",
+    "price": 19.99,
+    "image": "/men_tshirt_1.jpg",
+    "category": "fashion"
+  },
+  {
+    "id": 3,
+    "name": "Smartphone",
+    "price": 599.99,
+    "image": "/iphone13.jpg",
+    "category": "electronics"
+  },
+  {
+    "id": 4,
+    "name": "T-shirt",
+    "price": 19.99,
+    "image": "/men_tshirt_1.jpg",
+    "category": "fashion"
+  },
+  {
+    "id": 6,
+    "name": "T-shirt",
+    "price": 19.99,
+    "image": "/men_tshirt_1.jpg",
+    "category": "fashion"
+  },
+  {
+    "id": 10,
+    "name": "New Game",
+    "price": 29.99
+  }
+]
