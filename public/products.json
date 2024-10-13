@@ -22,8 +22,25 @@
   },
   {
     "id": 5,
-    "name": "ad",
-    "price": 11,
-    "image": "/uploads/1728721335324.jpg"
+    "name": "microsoft surface 2",
+    "price": 999,
+    "image": "/uploads/1728724116320.jfif",
+    "category": "electronics"
+  },
+  {
+    "id": 6,
+    "name": "poco f6",
+    "price": 320,
+    "category": "electronics",
+    "image": "/uploads/1728724504654.jpg",
+    "owner": "aliahanch28"
+  },
+  {
+    "id": 8,
+    "name": "Apple iPhone 16 256 6",
+    "price": 1300,
+    "category": "electronics",
+    "image": "/uploads/1728798067941.jpg",
+    "owner": "aliahanch28"
   }
 ]

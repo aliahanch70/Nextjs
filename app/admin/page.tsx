@@ -2,8 +2,7 @@
 import { cookies } from 'next/headers';
 import {jwtDecode} from 'jwt-decode';
 import DashboardClient from '@/components/DashboardClient'; // Client Component
-import DashboardClient2 from '@/components/ImageUploader';
-import ImageUploader from '@/components/ImageUploader';
+
 
 interface User {
   username: string;
@@ -26,8 +25,7 @@ export default function DashboardServer() {
   return (
   <>
      <DashboardClient user={user} />
-     <p>dshasss</p>
-     <ImageUploader />
+     
   </>
   
 )}

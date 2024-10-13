@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
+import CategorySelector from './CategorySelector';
 
 interface User {
   username: string;
@@ -13,9 +14,11 @@ interface Product {
   name: string;
   price: number;
   image: string; // Image is now a URL, not a File
+  category: string;
+  owner: string; // Username of the owner who added the product
 }
 
-const initialNewProduct = { name: '', price: 0, image: '' };
+const initialNewProduct = { name: '', price: 0, category: '', image: '' };
 
 interface DashboardClientProps {
   user: User | null;
@@ -68,11 +71,17 @@ export default function DashboardClient({ user }: DashboardClientProps) {
 
   // Handle adding a new product
   const handleAddProduct = async () => {
+    if (!user) return; // Ensure user is logged in
     const imageUrl = await uploadImage(); // Upload the image and get its URL
     if (!imageUrl) return;
 
     const newId = products.length ? products[products.length - 1].id + 1 : 1;
-    const newProductData = { id: newId, ...newProduct, image: imageUrl };
+    const newProductData = { 
+      id: newId, 
+      ...newProduct, 
+      image: imageUrl, 
+      owner: user.username // Set the logged-in user as the owner
+    };
 
     const response = await fetch('/api/products', {
       method: 'POST',
@@ -108,6 +117,10 @@ export default function DashboardClient({ user }: DashboardClientProps) {
       setEditingProduct(null); // Clear edit state after updating
       setImageFile(null); // Reset image file input
     }
+  };
+
+  const handleCategoryChange = (category: string) => {
+    setNewProduct({ ...newProduct, category });
   };
 
   const handleDeleteProduct = async (id: number) => {
@@ -153,7 +166,7 @@ export default function DashboardClient({ user }: DashboardClientProps) {
             <ul className="mt-4">
               {products.map((product) => (
                 <li key={product.id} className="mb-2 text-gray-700 dark:text-gray-300">
-                  {product.name} - ${product.price}
+                  {product.name} - ${product.price} - {product.category} - {product.owner}
                   <div>
                     <img src={product.image} alt={product.name} className="max-w-xs mt-2" />
                     <button
@@ -174,7 +187,7 @@ export default function DashboardClient({ user }: DashboardClientProps) {
             </ul>
 
             {/* Add New Product */}
-            <div className="mt-6">
+            <div className="mt-6 mb-12">
               <h2 className="text-xl font-semibold">Add New Product</h2>
               <input
                 type="text"
@@ -190,6 +203,12 @@ export default function DashboardClient({ user }: DashboardClientProps) {
                 onChange={(e) => setNewProduct({ ...newProduct, price: parseFloat(e.target.value) })}
                 className="border p-2 rounded mr-2"
               />
+              <div className="mt-2">
+              <CategorySelector
+                value={newProduct.category}
+                onChange={handleCategoryChange}
+              />
+              </div>
               <input type="file" accept="image/*" onChange={handleImageChange} className="mb-2" />
 
               <button
@@ -216,6 +235,13 @@ export default function DashboardClient({ user }: DashboardClientProps) {
                   placeholder="Product Price"
                   value={editingProduct.price}
                   onChange={(e) => setEditingProduct({ ...editingProduct, price: parseFloat(e.target.value) })}
+                  className="border p-2 rounded mr-2"
+                />
+                <input
+                  type="text"
+                  placeholder="Category"
+                  value={editingProduct.category}
+                  onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value })}
                   className="border p-2 rounded mr-2"
                 />
                 <input type="file" accept="image/*" onChange={handleImageChange} className="mb-2" />
