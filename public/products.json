@@ -4,43 +4,306 @@
     "name": "T-shirt",
     "price": 19.99,
     "image": "/men_tshirt_1.jpg",
-    "category": "fashion"
+    "category": "fashion",
+    "description": "A classic, comfortable T-shirt that’s perfect for everyday wear. Made from soft, breathable cotton.",
+    "material": "100% cotton",
+    "sizesAvailable": [
+      "S",
+      "M",
+      "L",
+      "XL"
+    ],
+    "colorsAvailable": [
+      "Black",
+      "White",
+      "Gray"
+    ],
+    "careInstructions": "Machine wash cold, tumble dry low.",
+    "stock": 14,
+    "rating": 4.5,
+    "specific": "This is a specific product that only exists in the database.",
+    "views": 2379
   },
   {
     "id": 3,
-    "name": "Smartphone",
-    "price": 599.99,
+    "name": "iPhone 13",
+    "price": 699.99,
     "image": "/iphone13.jpg",
-    "category": "electronics"
+    "category": "electronics",
+    "description": "iPhone 13 features an advanced dual-camera system, A15 Bionic chip for lightning-fast performance, and 5G capability.",
+    "processor": "A15 Bionic chip",
+    "display": "6.1-inch Super Retina XDR OLED display",
+    "cameras": {
+      "rear": "12MP dual-camera system (Wide and Ultra Wide)",
+      "front": "12MP TrueDepth camera"
+    },
+    "battery": "Up to 19 hours of video playback",
+    "weight": "174g",
+    "storageOptions": [
+      {
+        "size": "128GB",
+        "price": 699.99
+      },
+      {
+        "size": "256GB",
+        "price": 799.99
+      },
+      {
+        "size": "512GB",
+        "price": 999.99
+      }
+    ],
+    "os": "iOS 15",
+    "stock": 25,
+    "rating": 4.8,
+    "views": 2354
   },
   {
     "id": 4,
-    "name": "T-shirt",
-    "price": 19.99,
-    "image": "/men_tshirt_1.jpg",
-    "category": "fashion"
+    "name": "Casual Blend T-shirt",
+    "price": 24.99,
+    "image": "/uploads/1728886489717.webp",
+    "category": "fashion",
+    "description": "Soft and comfortable T-shirt for casual wear, featuring a cotton-polyester blend for durability and comfort.",
+    "material": "60% cotton, 40% polyester",
+    "sizesAvailable": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "colorsAvailable": [
+      "Red",
+      "Blue",
+      "Green",
+      "Black",
+      "White"
+    ],
+    "careInstructions": "Machine wash cold, tumble dry low. Do not bleach.",
+    "stock": 75,
+    "rating": 4.2,
+    "views": 2355
   },
   {
     "id": 5,
-    "name": "microsoft surface 2",
-    "price": 999,
+    "name": "Microsoft Surface Laptop 4",
+    "price": 1299.99,
     "image": "/uploads/1728724116320.jfif",
-    "category": "electronics"
+    "category": "electronics",
+    "description": "The Surface Laptop 4 offers a sleek design, high-resolution touch display, and powerful performance for productivity and creativity.",
+    "processor": "Intel Core i7-1185G7",
+    "display": "13.5-inch PixelSense touchscreen, 2256 x 1504 resolution",
+    "ram": "16GB LPDDR4x",
+    "storage": "512GB SSD",
+    "battery": "Up to 19 hours of battery life",
+    "weight": "1.27kg",
+    "os": "Windows 11 Home",
+    "ports": [
+      "USB-C",
+      "USB-A",
+      "Surface Connect",
+      "3.5mm headphone jack"
+    ],
+    "stock": 15,
+    "rating": 4.6,
+    "views": 2346
   },
   {
     "id": 6,
-    "name": "poco f6",
-    "price": 320,
+    "name": "Poco F5 Pro",
+    "price": 499.99,
     "category": "electronics",
     "image": "/uploads/1728724504654.jpg",
-    "owner": "aliahanch28"
+    "description": "Poco F5 Pro offers flagship-level performance with a Snapdragon processor, 12GB RAM, and 512GB storage, perfect for power users and gamers.",
+    "processor": "Qualcomm Snapdragon 8+ Gen 1",
+    "display": "6.67-inch AMOLED, 120Hz refresh rate, 1440 x 3200 pixels",
+    "ram": "12GB LPDDR5",
+    "storage": "512GB UFS 3.1",
+    "cameras": {
+      "rear": "64MP (main) + 8MP (ultrawide) + 2MP (macro)",
+      "front": "16MP selfie camera"
+    },
+    "battery": "5000mAh with 67W fast charging",
+    "weight": "204g",
+    "os": "MIUI 14 based on Android 13",
+    "stock": 20,
+    "rating": 4.7,
+    "views": 2350
   },
   {
     "id": 8,
-    "name": "Apple iPhone 16 256 6",
-    "price": 1300,
+    "name": "Apple iPhone 14 Pro",
+    "price": 1099.99,
     "category": "electronics",
-    "image": "/uploads/1728798067941.jpg",
-    "owner": "aliahanch28"
+    "image": "/uploads/1728807549054.jpg",
+    "description": "The iPhone 14 Pro features a stunning display, powerful A16 Bionic chip, and an improved camera system for professional-level photography.",
+    "processor": "A16 Bionic chip",
+    "display": "6.1-inch Super Retina XDR OLED, 120Hz ProMotion",
+    "cameras": {
+      "rear": "48MP main + 12MP ultrawide + 12MP telephoto",
+      "front": "12MP TrueDepth camera"
+    },
+    "battery": "Up to 23 hours of video playback",
+    "weight": "206g",
+    "os": "iOS 16",
+    "storageOptions": [
+      {
+        "size": "128GB",
+        "price": 1099.99
+      },
+      {
+        "size": "256GB",
+        "price": 1199.99
+      },
+      {
+        "size": "512GB",
+        "price": 1399.99
+      },
+      {
+        "size": "1TB",
+        "price": 1599.99
+      }
+    ],
+    "stock": 20,
+    "rating": 4.8,
+    "views": 2350
+  },
+  {
+    "id": 9,
+    "name": "Samsung Galaxy A54 5G",
+    "price": 449.99,
+    "category": "electronics",
+    "image": "/uploads/1728887849026.jpg",
+    "description": "The Galaxy A54 5G offers solid performance, a versatile camera system, and a long-lasting battery at a mid-range price point.",
+    "processor": "Exynos 1380",
+    "display": "6.4-inch Super AMOLED, 120Hz",
+    "ram": "8GB",
+    "storage": "256GB",
+    "cameras": {
+      "rear": "50MP (main) + 12MP (ultrawide) + 5MP (macro)",
+      "front": "32MP selfie camera"
+    },
+    "battery": "5000mAh with 25W fast charging",
+    "weight": "202g",
+    "os": "One UI 5.1 based on Android 13",
+    "stock": 30,
+    "rating": 4.5,
+    "views": 2353
+  },
+  {
+    "id": 10,
+    "name": "Samsung Galaxy A54 5G",
+    "price": 449.99,
+    "category": "electronics",
+    "image": "/uploads/1728887880832.webp",
+    "description": "The Samsung Galaxy A54 5G offers a great balance of performance, camera quality, and battery life at a mid-range price point.",
+    "processor": "Exynos 1380",
+    "display": "6.4-inch Super AMOLED, 120Hz refresh rate",
+    "ram": "8GB",
+    "storage": "256GB",
+    "cameras": {
+      "rear": "50MP (main) + 12MP (ultrawide) + 5MP (macro)",
+      "front": "32MP selfie camera"
+    },
+    "battery": "5000mAh with 25W fast charging",
+    "weight": "202g",
+    "os": "One UI 5.1 based on Android 13",
+    "stock": 35,
+    "rating": 4.5,
+    "views": 2347
+  },
+  {
+    "id": 11,
+    "name": "Apple iPhone 15",
+    "price": 799.99,
+    "category": "electronics",
+    "image": "/uploads/1728887909495.jpg",
+    "description": "The iPhone 15 features a powerful A16 Bionic chip, advanced camera system, and Dynamic Island, offering a premium smartphone experience.",
+    "processor": "A16 Bionic chip",
+    "display": "6.1-inch Super Retina XDR OLED display",
+    "ram": "6GB",
+    "storage": "256GB",
+    "cameras": {
+      "rear": "48MP main + 12MP ultra-wide",
+      "front": "12MP TrueDepth camera with autofocus"
+    },
+    "battery": "Up to 20 hours of video playback",
+    "weight": "171g",
+    "os": "iOS 17",
+    "features": [
+      "5G capability",
+      "MagSafe",
+      "Face ID",
+      "Water resistant (IP68)"
+    ],
+    "stock": 40,
+    "rating": 4.8,
+    "views": 2347
+  },
+  {
+    "id": 12,
+    "name": "Poco X6 Pro",
+    "price": 349.99,
+    "category": "electronics",
+    "image": "/uploads/1728887948599.webp",
+    "description": "The Poco X6 Pro offers flagship-level performance with its powerful Dimensity processor, 120Hz AMOLED display, and impressive camera system.",
+    "processor": "MediaTek Dimensity 8300-Ultra",
+    "display": "6.67-inch AMOLED, 120Hz refresh rate, 1.5K resolution",
+    "ram": "12GB LPDDR5X",
+    "storage": "512GB UFS 4.0",
+    "cameras": {
+      "rear": "64MP (main) + 8MP (ultrawide) + 2MP (macro)",
+      "front": "16MP selfie camera"
+    },
+    "battery": "5000mAh with 67W fast charging",
+    "weight": "186g",
+    "os": "MIUI 14 based on Android 13",
+    "features": [
+      "5G capability",
+      "Dolby Vision",
+      "Dolby Atmos",
+      "IP54 rating"
+    ],
+    "stock": 30,
+    "rating": 4.6,
+    "views": 2368,
+    "goozOptions": [
+      {
+        "size": "128GB",
+        "price": 1099.99
+      },
+      {
+        "size": "256GB",
+        "price": 1199.99
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "name": "Poco X6",
+    "price": 299.99,
+    "category": "electronics",
+    "image": "/uploads/1728887987010.jpg",
+    "description": "The Poco X6 offers excellent performance and features at a competitive price, including a smooth 120Hz display and powerful Snapdragon processor.",
+    "processor": "Qualcomm Snapdragon 7s Gen 2",
+    "display": "6.67-inch AMOLED, 120Hz refresh rate, 1.5K resolution",
+    "ram": "12GB LPDDR5",
+    "storage": "512GB UFS 3.1",
+    "cameras": {
+      "rear": "64MP (main) + 8MP (ultrawide) + 2MP (macro)",
+      "front": "16MP selfie camera"
+    },
+    "battery": "5100mAh with 67W fast charging",
+    "weight": "181g",
+    "os": "MIUI 14 based on Android 13",
+    "features": [
+      "5G capability",
+      "Dolby Atmos",
+      "IP54 rating"
+    ],
+    "stock": 45,
+    "rating": 4.5,
+    "views": 2362
   }
 ]

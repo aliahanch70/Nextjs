@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import CategorySelector from './CategorySelector';
+import PriceSlider from './Slider';
 
 interface User {
   username: string;
@@ -29,13 +30,25 @@ export default function DashboardClient({ user }: DashboardClientProps) {
   const [newProduct, setNewProduct] = useState(initialNewProduct);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 0]);
 
   // Fetch products from your JSON file
   useEffect(() => {
     fetch('/products.json')
       .then((response) => response.json())
-      .then((data) => setProducts(data));
+      .then((data) => {
+        setProducts(data);
+        const prices = data.map((product: Product) => product.price);
+        const minPrice = Math.min(...prices);
+        const maxPrice = Math.max(...prices);
+        setPriceRange([minPrice, maxPrice]);
+      });
   }, []);
+
+  const handlePriceChange = (values: [number, number]) => {
+    // Handle price change logic here
+    console.log('Price range changed:', values);
+  };
 
   // Handle image file selection for new or editing product
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -168,7 +181,7 @@ export default function DashboardClient({ user }: DashboardClientProps) {
                 <li key={product.id} className="mb-2 text-gray-700 dark:text-gray-300">
                   {product.name} - ${product.price} - {product.category} - {product.owner}
                   <div>
-                    <img src={product.image} alt={product.name} className="max-w-xs mt-2" />
+                    <img src={product.image} alt={product.name} className="max-w-32	 mt-2" />
                     <button
                       onClick={() => handleEditClick(product)}
                       className="ml-2 text-blue-500"
@@ -217,6 +230,16 @@ export default function DashboardClient({ user }: DashboardClientProps) {
               >
                 Add Product
               </button>
+            </div>
+
+            {/* Price Slider */}
+            <div className="mt-6">
+              <h2 className="text-xl font-semibold">Filter by Price</h2>
+              <PriceSlider
+                min={priceRange[0]}
+                max={priceRange[1]}
+                onChange={handlePriceChange}
+              />
             </div>
 
             {/* Edit Product Section */}

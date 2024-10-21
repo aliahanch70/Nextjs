@@ -36,7 +36,7 @@ export async function POST(request: Request) {
       secure: process.env.NODE_ENV === 'test', // Use secure cookies in production
       sameSite: 'strict',
       path: '/',
-      maxAge: 3600, // 1 hour
+      maxAge: 86000, // 1 hour
     }));
 
     console.log('Cookie set with token:', token); // Debugging log

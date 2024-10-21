@@ -15,17 +15,16 @@ interface LayoutProps {
 }
 
 export default function Layout({ user }: LayoutProps) {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const [showCallout, setShowCallout] = useState(false);
   const router = useRouter();
 
   // Load dark mode preference from localStorage
   useEffect(() => {
-    const storedMode = localStorage.getItem('darkMode');
-    if (storedMode === 'true') {
-      setDarkMode(true);
-      document.documentElement.classList.add('dark');
-    }
+    // Set dark mode as default
+    setDarkMode(true);
+    document.documentElement.classList.add('dark');
+    localStorage.setItem('darkMode', 'true');
   }, []);
 
   // Update dark mode based on state
