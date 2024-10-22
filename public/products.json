@@ -239,7 +239,19 @@
     ],
     "stock": 40,
     "rating": 4.8,
-    "views": 2347
+    "views": 2348,
+    "optionTypes": [
+      {
+        "name": "www",
+        "options": [
+          {
+            "name": "ram",
+            "size": "4",
+            "price": 799
+          }
+        ]
+      }
+    ]
   },
   {
     "id": 12,
