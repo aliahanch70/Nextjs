@@ -267,7 +267,7 @@ const Shop = () => {
                     />
                   ))}
                   <span className="ml-1 text-xs text-gray-500 dark:text-gray-400">
-                    ({product.rating.toFixed(1)})
+                    ({product.rating? product.rating.toFixed(1) : null})
                   </span>
                 </div>
                 <button

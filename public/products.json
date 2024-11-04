@@ -22,7 +22,7 @@
     "stock": 14,
     "rating": 4.5,
     "specific": "This is a specific product that only exists in the database.",
-    "views": 2379
+    "views": 2380
   },
   {
     "id": 3,
@@ -317,5 +317,41 @@
     "stock": 45,
     "rating": 4.5,
     "views": 2362
+  },
+  {
+    "id": 14,
+    "name": "s24 fe",
+    "price": 485,
+    "category": "electronics",
+    "image": "/uploads/1730711389701.webp",
+    "specific": "256 - 8",
+    "options": [],
+    "owner": "aliahanch28",
+    "optionTypes": [
+      {
+        "name": "ram",
+        "options": [
+          {
+            "size": "256 - 8 ",
+            "price": 350
+          },
+          {
+            "size": "512-12",
+            "price": 370
+          }
+        ]
+      }
+    ],
+    "ramOptions": [
+      {
+        "size": "256 - 8 ",
+        "price": 350
+      },
+      {
+        "size": "512-12",
+        "price": 370
+      }
+    ],
+    "views": null
   }
 ]
