@@ -6,6 +6,7 @@ import Link from 'next/link';
 export default function SearchPage() {
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const searchParams = useSearchParams();
   const query = searchParams.get('q');
 
@@ -13,11 +14,19 @@ export default function SearchPage() {
     const fetchSearchResults = async () => {
       if (query) {
         try {
+          setIsLoading(true);
+          setError(null);
           const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
-          const data = await response.json();
+          const responseText = await response.text();
+          console.log('Full response:', responseText);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}, response: ${responseText}`);
+          }
+          const data = JSON.parse(responseText);
           setSearchResults(data);
         } catch (error) {
           console.error('Error fetching search results:', error);
+          setError(error.message);
         } finally {
           setIsLoading(false);
         }
@@ -32,6 +41,8 @@ export default function SearchPage() {
       <h1 className="text-2xl font-bold mb-4">Search Results for "{query}"</h1>
       {isLoading ? (
         <p>Loading...</p>
+      ) : error ? (
+        <p className="text-red-500">Error: {error}</p>
       ) : searchResults.length === 0 ? (
         <p>No results found.</p>
       ) : (

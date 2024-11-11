@@ -1,19 +1,33 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import axios from 'axios';
+import cheerio from 'cheerio';
 
 // Path to your JSON file storing the products
-const filePath = path.join(process.cwd(), '/public/products.json');
+const productsFilePath = path.join(process.cwd(), '/public/products.json');
+const priceFilePath = path.join(process.cwd(), '/public/price.json');
 
 // Helper function to read products
 const readProducts = () => {
-  const fileData = fs.readFileSync(filePath, 'utf8');
+  const fileData = fs.readFileSync(productsFilePath, 'utf8');
   return JSON.parse(fileData);
 };
 
 // Helper function to write products
 const writeProducts = (products: any) => {
-  fs.writeFileSync(filePath, JSON.stringify(products, null, 2));
+  fs.writeFileSync(productsFilePath, JSON.stringify(products, null, 2));
+};
+
+// Helper function to read prices
+const readPrices = () => {
+  const fileData = fs.readFileSync(priceFilePath, 'utf8');
+  return JSON.parse(fileData);
+};
+
+// Helper function to write prices
+const writePrices = (prices: any) => {
+  fs.writeFileSync(priceFilePath, JSON.stringify(prices, null, 2));
 };
 
 // POST: Add a new product
