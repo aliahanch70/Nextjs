@@ -1,8 +1,12 @@
 [
   {
-    "url": "https://sinaelectric.ir/product/%d9%be%d9%86%d9%84-%d8%b1%d9%88%da%a9%d8%a7%d8%b1-25-%d9%88%d8%a7%d8%aa/",
-    "price": "350,000",
-    "timestamp": "2024-11-05T09:05:15.012Z"
+    "url": "https://arta-kala.com/product/گوشی-سامسونگ-a14-حافظه-64-رم-4-گیگابایت-ا-samsung-galaxy-a14-64/",
+    "price": "551",
+    "timestamp": "2024-11-12T06:44:06.520Z",
+    "id": "8",
+    "name": "arta2",
+    "explain": "er2x",
+    "message": "Price updated successfully"
   },
   {
     "url": "https://sinaelectric.ir/product/%d9%85%d8%ad%d8%a7%d9%81%d8%b8-%da%a9%d9%88%d9%84%d8%b1%da%af%d8%a7%d8%b2%db%8c-%d8%af%db%8c%d8%ac%db%8c%d8%aa%d8%a7%d9%84/",
@@ -69,22 +73,12 @@
   },
   {
     "id": 2,
-    "name": "ali",
-    "price": "23",
-    "url": " POST /api/updatePrices 404 in 145ms",
-    "explain": "",
-    "isEditing": true,
-    "priceId": "abba6d34-500d-41cf-92e4-0ca7a1a6504a",
-    "timestamp": "2024-11-12T06:35:43.209Z"
-  },
-  {
-    "id": 2,
     "name": "akli2",
     "price": "33",
     "url": " POST /api/updatePrices 404 in 145ms",
     "explain": "",
     "isEditing": false,
     "priceId": "55c9b443-088a-4877-98da-7ea8d390b9c7",
-    "timestamp": "2024-11-12T06:35:53.201Z"
+    "timestamp": "2024-11-12T06:44:06.520Z"
   }
 ]
