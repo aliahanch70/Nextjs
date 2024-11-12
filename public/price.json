@@ -1,10 +1,5 @@
 [
   {
-    "url": "https://sinaelectric.ir/product/%d8%aa%d8%b1%d9%85%d9%88%d8%b3%d8%aa%d8%a7%d8%aa-1300-%d8%af%d8%b1%d8%ac%d9%87-%d9%85%db%8c%da%a9%d8%b1%d9%88/",
-    "price": "320,000",
-    "timestamp": "2024-11-05T08:13:29.239Z"
-  },
-  {
     "url": "https://sinaelectric.ir/product/%d9%be%d9%86%d9%84-%d8%b1%d9%88%da%a9%d8%a7%d8%b1-25-%d9%88%d8%a7%d8%aa/",
     "price": "350,000",
     "timestamp": "2024-11-05T09:05:15.012Z"
@@ -65,31 +60,31 @@
     "timestamp": "2024-11-05T09:20:22.325Z"
   },
   {
-    "name": "asd",
-    "url": "https://sinaelectric.ir/",
-    "price": "55",
-    "explain": "asdasd",
-    "timestamp": "2024-11-06T06:50:05.458Z"
-  },
-  {
-    "id": "2",
-    "name": "ewdf",
-    "prices": [
-      {
-        "name": "ewdf",
-        "price": 77,
-        "url": "https://75lcwysm-fz1zg853-o0ky7cv43w8.ac3-preview.marscode.dev/product/t-shirt-2",
-        "explain": "qwd",
-        "timestamp": "2024-11-11T04:53:57.773Z"
-      }
-    ]
-  },
-  {
     "id": "8",
     "name": "arta2",
     "url": "https://arta-kala.com/product/گوشی-سامسونگ-a14-حافظه-64-رم-4-گیگابایت-ا-samsung-galaxy-a14-64/",
     "price": "551",
     "explain": "er2x",
     "timestamp": "2024-11-06T09:20:10.187Z"
+  },
+  {
+    "id": 2,
+    "name": "ali",
+    "price": "23",
+    "url": " POST /api/updatePrices 404 in 145ms",
+    "explain": "",
+    "isEditing": true,
+    "priceId": "abba6d34-500d-41cf-92e4-0ca7a1a6504a",
+    "timestamp": "2024-11-12T06:35:43.209Z"
+  },
+  {
+    "id": 2,
+    "name": "akli2",
+    "price": "33",
+    "url": " POST /api/updatePrices 404 in 145ms",
+    "explain": "",
+    "isEditing": false,
+    "priceId": "55c9b443-088a-4877-98da-7ea8d390b9c7",
+    "timestamp": "2024-11-12T06:35:53.201Z"
   }
 ]
