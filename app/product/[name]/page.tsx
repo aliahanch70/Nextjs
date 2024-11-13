@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { formatDistanceToNow } from 'date-fns';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { ShoppingCartIcon, PencilIcon } from '@heroicons/react/24/solid';
@@ -8,6 +9,7 @@ import products from '../../../public/products.json';
 import priceData from '../../../public/price.json';
 import { Callout } from '@/components/Callout';
 import { useCart } from '@/context/CartContext';
+import { useCurrentTime } from '@/hooks/useCurrentTime';
 
 interface Product {
   id: number;
@@ -33,6 +35,7 @@ export default function ProductPage() {
   const [editingPrice, setEditingPrice] = useState<any>(null);
 
   const { addToCart } = useCart();
+  const currentTime = useCurrentTime();
 
   const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: string }>({});
 
@@ -251,6 +254,10 @@ export default function ProductPage() {
   const handleAddNewPrice = () => {
     setEditingPrice({ id: product.id, name: '', price: '', url: '', explain: '', isEditing: false, priceId: null });
     setShowEditModal(true);
+  };
+
+  const getTimeAgo = (timestamp: string) => {
+    return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
   };
 
   const handleSavePrice = async (editedPrice: any) => {
@@ -516,7 +523,7 @@ export default function ProductPage() {
                                 <h4 className="font-semibold text-lg mb-2">{price.name || 'Unknown'}</h4>
                                 <p className="text-xl font-bold mb-2">${parseFloat(price.price).toFixed(2)}</p>
                                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{price.explain || 'No explanation provided'}</p>
-                                <p className="text-xs text-gray-500 dark:text-gray-400">Last updated: {new Date(price.timestamp).toLocaleString()}</p>
+                                <p className="text-xs text-gray-500 dark:text-gray-400">Last updated: {getTimeAgo(price.timestamp)}</p>
                                 <p className="text-xs text-gray-500 dark:text-gray-400">Price ID: {price.priceId}</p>
                               </div>
                               <div className="flex justify-between items-center mt-4">
