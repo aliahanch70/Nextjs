@@ -37,6 +37,12 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ message: 'File uploaded', filePath: `/uploads/${newFileName}` });
   } catch (error) {
-    return NextResponse.json({ message: 'Error uploading file', error: error.message }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: 'Error uploading file',
+        error: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 }
+    );
   }
 }

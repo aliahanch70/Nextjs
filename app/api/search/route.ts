@@ -13,6 +13,7 @@ interface Product {
 }
 
 import { promises as fsPromises } from 'fs';
+import { Error } from 'mongoose';
 
 export async function GET(req: Request) {
   try {
@@ -137,8 +138,13 @@ export async function GET(req: Request) {
         }
       } catch (error) {
         console.error('Error processing product data:', error);
-        return new NextResponse(JSON.stringify({ message: 'Error processing product data: ' + error.message }), {
-          status: 500,
+        return NextResponse.json(
+          {
+            message: 'Error uploading file',
+            error: error instanceof Error ? error.message : 'Unknown error',
+          },
+          {           
+            status: 500,
           headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
@@ -229,19 +235,23 @@ export async function GET(req: Request) {
             console.log('Name match:', nameMatch, 'Description match:', descriptionMatch);
             return nameMatch || descriptionMatch;
           } catch (error) {
+            const err = error as Error;
+
             console.error('Error processing product:', error);
-            console.error('Error stack:', error.stack);
+            console.error('Error stack:', err.stack);
             console.error('Product causing error:', JSON.stringify(product));
             console.error('Query causing error:', query);
             return false;
           }
         });
       } catch (filterError) {
+        const ferr = filterError as Error;
+
         console.error('Error during product filtering:', filterError);
-        console.error('Error stack:', filterError.stack);
+        console.error('Error stack:', ferr.stack);
         console.error('Products:', JSON.stringify(products));
         console.error('Query:', query);
-        return new NextResponse(JSON.stringify({ message: 'Error during product filtering: ' + filterError.message }), {
+        return new NextResponse(JSON.stringify({ message: 'Error during product filtering: ' + ferr.message }), {
           status: 500,
           headers: {
             'Content-Type': 'application/json',

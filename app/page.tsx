@@ -1,4 +1,5 @@
 'use client';
+// This file is deprecated. Please use optimized-page.tsx instead.
 import React, { useState, useEffect } from 'react';
 import products from '../public/products.json';
 import Link from 'next/link';
@@ -15,8 +16,14 @@ interface Product {
   price: number;
   image: string;
   category: string;
-  rating: number;
   views:number;
+  description: string;
+  material?: string; // Make optional
+  sizesAvailable: string[];
+  colorsAvailable: string[];
+  careInstructions: string;
+  stock: number;
+  rating?: number; // Allow undefined
 }
 
 // Calculate min and max price outside of component
@@ -27,7 +34,10 @@ const initialMaxPrice = Math.max(...prices);
 const Shop = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [priceRange, setPriceRange] = useState<[number, number]>([initialMinPrice, initialMaxPrice]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>(products as Product[]);
+  const [displayedProducts, setDisplayedProducts] = useState<Product[]>([]);
+  const [page, setPage] = useState(1);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
   const [sortOption, setSortOption] = useState<'price_asc' | 'price_desc' | 'highest-rated' | 'most_viewed'>('price_asc');
   const [showMobileFilters, setShowMobileFilters] = useState(false);
@@ -62,7 +72,7 @@ const Shop = () => {
       case 'most_viewed':
         return [...products].sort((a, b) => b.views - a.views);
       case 'highest-rated':
-        return [...products].sort((a, b) => b.rating - a.rating);
+        return [...products].sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
       default:
         return products;
     }
@@ -91,27 +101,71 @@ const Shop = () => {
   const handleCategoryFilter = (category: string | null) => {
     setSelectedCategory(category);
   };
+ const handlePriceRangeChange = (values: [number, number]) => {
+  setPriceRange(values);
 
-  const handlePriceRangeChange = (values: [number, number]) => {
-    setPriceRange(values);
-    // Update filtered products immediately when the slider changes
-    const newFilteredProducts = products.filter((product: Product) => {
-      const categoryMatch = !selectedCategory || product.category === selectedCategory;
-      const priceMatch = product.price >= values[0] && product.price <= values[1];
-      return categoryMatch && priceMatch;
-    });
-    setFilteredProducts(newFilteredProducts);
-  };
+  const normalizedProducts = products.map((product) => ({
+    ...product,
+    rating: product.rating ?? 0,  // Default rating if undefined
+    views: product.views ?? 0,     // Default views if null or undefined
+    material: product.material ?? "Unknown", // Default material if undefined
+  }));
+
+  const newFilteredProducts = normalizedProducts.filter((product) => {
+    const categoryMatch = !selectedCategory || product.category === selectedCategory;
+    const priceMatch = product.price >= values[0] && product.price <= values[1];
+    return categoryMatch && priceMatch;
+  });
+
+  setFilteredProducts(newFilteredProducts as Product[]);
+};
+
+  
 
   useEffect(() => {
-    const newFilteredProducts = products.filter((product: Product) => {
+    const normalizedProducts = products.map((product) => ({
+      ...product,
+      rating: product.rating ?? 0, // Default to 0 if undefined
+    }));
+  
+    const newFilteredProducts = normalizedProducts.filter((product) => {
       const categoryMatch = !selectedCategory || product.category === selectedCategory;
       const priceMatch = product.price >= priceRange[0] && product.price <= priceRange[1];
       return categoryMatch && priceMatch;
     });
-    const sortedProducts = sortProducts(newFilteredProducts);
-    setFilteredProducts(sortedProducts);
-  }, [selectedCategory, priceRange, sortOption]);
+  
+    setFilteredProducts(newFilteredProducts as Product[]);
+  }, [products, selectedCategory, priceRange]);
+  
+  
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && displayedProducts.length < filteredProducts.length) {
+          // Add 1 second loading delay before showing more products
+          setTimeout(() => {
+            setIsLoadingMore(true);
+          const nextProducts = filteredProducts.slice(
+              displayedProducts.length,
+              displayedProducts.length + 12
+            );
+            setDisplayedProducts((prev) => [...prev, ...nextProducts]);
+            setPage((prev) => prev + 1);
+            setIsLoadingMore(false);
+          }, 100);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const sentinel = document.getElementById('sentinel');
+    if (sentinel) {
+      observer.observe(sentinel);
+    }
+
+    return () => observer.disconnect();
+  }, [displayedProducts, filteredProducts]);
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -244,7 +298,7 @@ const Shop = () => {
               </li>
             </ul>
           </div>
-          {filteredProducts.map((product: Product) => (
+          {displayedProducts.map((product: Product) => (
             <Link href={`/product/${encodeURIComponent(product.name.toLowerCase().replace(/ /g, '-'))}-${product.id}`} key={product.id}>
               <div
                 className="h-max p-3 sm:p-4 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-lg flex flex-col transition-transform duration-300 ease-in-out transform hover:dark:bg-gray-700 hover:bg-gray-200 hover:shadow-lg"
@@ -262,7 +316,7 @@ const Shop = () => {
                   {[...Array(5)].map((_, i) => (
                     <StarIcon
                       key={i}
-                      color={i < Math.round(product.rating) ? "yellow.400" : "gray.300"}
+                      color={i < Math.round(product.rating ?? 0) ? "yellow.400" : "gray.300"}
                       boxSize={3}
                     />
                   ))}
@@ -273,7 +327,14 @@ const Shop = () => {
                 <button
                   onClick={(e) => {
                     e.preventDefault();
-                    addToCart(product);
+                    addToCart({
+                      ...product,
+                      selectedOptions: {
+                        size: product.sizesAvailable[0],
+                        color: product.colorsAvailable[0],
+                      },
+                    });
+                    
                   }}
                   className="mt-2 bg-blue-500 text-white px-2 py-1 rounded-md flex items-center text-sm"
                 >
@@ -283,6 +344,13 @@ const Shop = () => {
               </div>
             </Link>
           ))}
+          <div id="sentinel" style={{ height: '20px' }}>
+            {isLoadingMore && (
+              <div className="w-full flex justify-center p-4">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 dark:border-white"></div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

@@ -13,7 +13,7 @@ export async function GET(
 
     // Read existing prices
     const pricesData = await fs.readFile(PRICE_FILE_PATH, 'utf-8');
-    let prices = JSON.parse(pricesData);
+    const prices = JSON.parse(pricesData);
 
     // Find the price with the given priceId
     const price = prices.find((p: any) => p.priceId === priceId);
@@ -41,7 +41,7 @@ export async function PUT(
 
     // Read existing prices
     const pricesData = await fs.readFile(PRICE_FILE_PATH, 'utf-8');
-    let prices = JSON.parse(pricesData);
+    const prices = JSON.parse(pricesData);
 
     // Find and update the price with the given priceId
     const updatedPrices = prices.map((p: any) => {

@@ -6,3 +6,6 @@ import { twMerge } from "tailwind-merge"
 export function cx(...args: ClassValue[]) {
   return twMerge(clsx(...args))
 }
+
+// src/lib/utils.ts
+export const cn = (...classes: string[]) => classes.filter(Boolean).join(' ');

@@ -22,7 +22,7 @@
     "stock": 14,
     "rating": 4.5,
     "specific": "This is a specific product that only exists in the database.",
-    "views": 2454
+    "views": 2535
   },
   {
     "id": 3,
@@ -56,7 +56,7 @@
     "os": "iOS 15",
     "stock": 25,
     "rating": 4.8,
-    "views": 2357
+    "views": 2365
   },
   {
     "id": 4,
@@ -353,5 +353,68 @@
       }
     ],
     "views": 9
+  },
+  {
+    "id": 15,
+    "name": "Samsung A06",
+    "price": 105,
+    "category": "electronics",
+    "image": "/uploads/1732080511752.webp",
+    "specific": "",
+    "options": [],
+    "owner": "aliahanch28",
+    "views": null
+  },
+  {
+    "id": 16,
+    "name": "Samsung Galaxy A15",
+    "price": 120,
+    "category": "electronics",
+    "image": "/uploads/1732080607045.jfif",
+    "specific": "",
+    "options": [],
+    "owner": "aliahanch28",
+    "views": null
+  },
+  {
+    "id": 17,
+    "name": "poco f6",
+    "price": 350,
+    "category": "electronics",
+    "image": "/uploads/1732084948095.jpg",
+    "specific": "",
+    "options": [],
+    "owner": "aliahanch28"
+  },
+  {
+    "id": 18,
+    "name": "poco f6 pro",
+    "price": 400,
+    "category": "electronics",
+    "image": "/uploads/1732084973391.webp",
+    "specific": "",
+    "options": [],
+    "owner": "aliahanch28"
+  },
+  {
+    "id": 19,
+    "name": "poco f5",
+    "price": 311,
+    "category": "electronics",
+    "image": "/uploads/1732085059053.jpg",
+    "specific": "",
+    "options": [],
+    "owner": "aliahanch28"
+  },
+  {
+    "id": 20,
+    "name": "poco f5 pro ",
+    "price": 340,
+    "category": "electronics",
+    "image": "/uploads/1732085086179.jpg",
+    "specific": "",
+    "options": [],
+    "owner": "aliahanch28",
+    "views": null
   }
 ]

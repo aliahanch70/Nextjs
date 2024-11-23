@@ -10,6 +10,15 @@ import priceData from '../../../public/price.json';
 import { Callout } from '@/components/Callout';
 import { useCart } from '@/context/CartContext';
 import { useCurrentTime } from '@/hooks/useCurrentTime';
+import ProductNotFind from '@/components/ProductNotFind';
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
+import { ExternalLink, ShoppingCart, Star } from "lucide-react";
+
+// import ProductManager from "@/components/ProductManager";
 
 interface Product {
   id: number;
@@ -68,7 +77,7 @@ export default function ProductPage() {
   };
 
   const handleAddToCart = (product: Product) => {
-    let updatedProduct = { ...product };
+    const updatedProduct = { ...product };
 
     const hasOptions = Object.keys(product).some(key => key.endsWith('Available') || key.endsWith('Options'));
 
@@ -203,21 +212,7 @@ export default function ProductPage() {
 
   if (!product) {
     return (
-      <div className="text-center p-8">
-        <p className="text-xl font-semibold mb-4">Sorry, we couldn't find the product you're looking for.</p>
-        <p className="mb-4">This might be because:</p>
-        <ul className="list-disc list-inside mb-4">
-          <li>The product name or ID in the URL might be incorrect</li>
-          <li>The product might have been removed from our catalog</li>
-        </ul>
-        <p className="mb-4">You can try:</p>
-        <ul className="list-disc list-inside mb-4">
-          <li>Double-checking the URL</li>
-          <li>Searching for the product on our main page</li>
-          <li>Browsing our categories to find similar products</li>
-        </ul>
-        <Link href="/" className="text-blue-500 hover:underline">Back to Shop</Link>
-      </div>
+      <ProductNotFind/>
     );
   }
 
@@ -257,7 +252,14 @@ export default function ProductPage() {
   };
 
   const getTimeAgo = (timestamp: string) => {
-    return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+    if (!timestamp) return 'Unknown time';
+    try {
+      const date = new Date(timestamp);
+      if (isNaN(date.getTime())) return 'Invalid date';
+      return formatDistanceToNow(date, { addSuffix: true });
+    } catch (error) {
+      return 'Invalid date';
+    }
   };
 
   const handleSavePrice = async (editedPrice: any) => {
@@ -370,154 +372,73 @@ export default function ProductPage() {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-900 min-h-screen relative">
-      {showSuccessMessage && (
-        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-sm">
-          <Callout variant="success" title="Product Added to Cart">
-            The item has been successfully added to your cart.
-          </Callout>
+    <div className="bg-white dark:bg-black min-h-screen relative">
+  {showSuccessMessage && (
+    <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-sm">
+      <Callout variant="success" title="Product Added to Cart">
+        The item has been successfully added to your cart.
+      </Callout>
+    </div>
+  )}
+
+  {showEditModal && (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+    <div className="bg-white dark:bg-black p-6 rounded-lg w-96">
+      <h2 className="text-xl font-bold mb-4">{editingPrice.isEditing ? 'Edit Price' : 'Add New Price'}</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Shop Name</label>
+          <input
+            type="text"
+            value={editingPrice?.name || ''}
+            onChange={(e) => setEditingPrice({...editingPrice, name: e.target.value})}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          />
         </div>
-      )}
-      {showEditModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-96">
-            <h2 className="text-xl font-bold mb-4">{editingPrice.isEditing ? 'Edit Price' : 'Add New Price'}</h2>
-            <form onSubmit={handleSubmit}>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Shop Name</label>
-                <input
-                  type="text"
-                  value={editingPrice?.name || ''}
-                  onChange={(e) => setEditingPrice({...editingPrice, name: e.target.value})}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Price</label>
-                <input
-                  type="number"
-                  value={editingPrice?.price || ''}
-                  onChange={(e) => setEditingPrice({...editingPrice, price: e.target.value})}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">URL</label>
-                <input
-                  type="text"
-                  value={editingPrice?.url || ''}
-                  onChange={(e) => setEditingPrice({...editingPrice, url: e.target.value})}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Explanation</label>
-                <textarea
-                  value={editingPrice?.explain || ''}
-                  onChange={(e) => setEditingPrice({...editingPrice, explain: e.target.value})}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                ></textarea>
-              </div>
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  onClick={() => setShowEditModal(false)}
-                  className="mr-2 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  Save
-                </button>
-              </div>
-            </form>
-          </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Price</label>
+          <input
+            type="number"
+            value={editingPrice?.price || ''}
+            onChange={(e) => setEditingPrice({...editingPrice, price: e.target.value})}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          />
         </div>
-      )}
-      <div className="container mx-auto p-4 w-full h-full">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-          <div className="flex justify-between items-center mb-4">
-            <Link href="/" className="text-blue-500 hover:underline inline-block">Back to Shop</Link>
-            <button
-              onClick={handleAddNewPrice}
-              className="bg-green-500 text-white px-4 py-2 rounded-md flex items-center"
-            >
-              <PencilIcon className="h-5 w-5 mr-2" />
-              Add Price
-            </button>
-          </div>
-          <div className="md:flex">
-            <div className="md:flex-shrink-0">
-              <img className="h-48 w-full object-cover md:w-48" src={product.image} alt={product.name} />
-            </div>
-            <div className="mt-4 md:mt-0 md:ml-6">
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{product.name}</h1>
-              <div className="mt-4">
-                <span className="text-gray-900 dark:text-white font-bold text-xl">${product.price.toFixed(2)}</span>
-              </div>
-              <div className="mt-4">
-                <span className="text-gray-600 dark:text-gray-400">Category: {product.category}</span>
-              </div>
-              <div className="mt-4">
-                <span className="text-gray-600 dark:text-gray-400">Stock: {product.stock}</span>
-              </div>
-              <div className="mt-4">
-                <span className="text-gray-600 dark:text-gray-400">Views: {viewCount !== null ? viewCount : 'Loading...'}</span>
-              </div>
-              {generateOptionSelectors()}
-              <div className="mt-4">
-                <button
-                  onClick={() => handleAddToCart(product)}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled={Object.keys(product).some(key => key.endsWith('Available') || key.endsWith('Options')) && Object.keys(selectedOptions).length === 0}
-                >
-                  <ShoppingCartIcon className="h-5 w-5 mr-2" />
-                  Add to Cart
-                </button>
-                {Object.keys(product).some(key => key.endsWith('Available') || key.endsWith('Options')) && <SelectedOptions />}
-              </div>
-              <div className="mt-6">
-                <div className="flex ">
-                  <button
-                    className={`dark:text-gray-200 text-gray-600 py-2 px-4 ${activeTab === 'description' ? 'border-b-2 border-blue-500' : ''}`}
-                    onClick={() => setActiveTab('description')}
-                  >
-                    Description
-                  </button>
-                  <button
-                    className={`dark:text-gray-200 text-gray-600 py-2 px-4 ${activeTab === 'specifics' ? 'border-b-2 border-blue-500' : ''}`}
-                    onClick={() => setActiveTab('specifics')}
-                  >
-                    Specifics
-                  </button>
-                  <button
-                    className={`dark:text-gray-200 text-gray-600 py-2 px-4 ${activeTab === 'prices' ? 'border-b-2 border-blue-500' : ''}`}
-                    onClick={() => setActiveTab('prices')}
-                  >
-                    Prices
-                  </button>
-                </div>
-                <div className="mt-4">
-                  {activeTab === 'description' && (
-                    <p className="text-gray-600 dark:text-gray-300">{product.description || 'No description available.'}</p>
-                  )}
-                  {activeTab === 'specifics' && (
-                    <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4">
-                      {renderNestedProperties(
-                        // Filter out common fields and only show specifics
-                        Object.fromEntries(Object.entries(product).filter(([key]) => !commonFields.includes(key)))
-                      )}
-                    </div>
-                  )}
-                  {activeTab === 'prices' && (
-                    <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold mb-2">Prices</h3>
-                      {prices.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                          {prices.map((price, index) => (
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">URL</label>
+          <input
+            type="text"
+            value={editingPrice?.url || ''}
+            onChange={(e) => setEditingPrice({...editingPrice, url: e.target.value})}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Explanation</label>
+          <textarea
+            value={editingPrice?.explain || ''}
+            onChange={(e) => setEditingPrice({...editingPrice, explain: e.target.value})}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          ></textarea>
+        </div>
+        <div className="flex justify-end">
+          <button
+            type="button"
+            onClick={() => setShowEditModal(false)}
+            className="mr-2 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
+    {prices.map((price, index) => (
                             <div key={price.priceId} className="border rounded-lg p-4 bg-white dark:bg-gray-800 shadow-md flex flex-col justify-between">
                               <div>
                                 <h4 className="font-semibold text-lg mb-2">{price.name || 'Unknown'}</h4>
@@ -553,17 +474,144 @@ export default function ProductPage() {
                             </div>
                           ))}
                         </div>
-                      ) : (
-                        <p>No prices available for this product.</p>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
+                      
+  
+  
+  )}
+          <button
+              onClick={handleAddNewPrice}
+              className="bg-green-500 text-white px-4 py-2 rounded-md flex items-center"
+            >
+              <PencilIcon className="h-5 w-5 mr-2" />
+              Add Price
+            </button>
+
+  {/* Main Content */}
+  <div className="container mx-auto px-4 py-8">
+    <div className="grid lg:grid-cols-2 gap-8">
+      <div className="relative aspect-square rounded-xl overflow-hidden">
+        <Image
+          src={product.image}
+          alt={product.name}
+          fill
+          className="object-cover"
+          priority
+        />
+        <Badge className="absolute top-4 left-4 bg-primary/90">
+        {product.category}
+        </Badge>
+      </div>
+     
+
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-4xl font-bold">{product.name}</h1>
+          <p className="text-2xl font-semibold mt-2">${product.price}</p>
+          <div className="flex items-center gap-2 mt-2">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                className={`w-5 h-5 ${
+                  i < product.rating
+                    ? "fill-yellow-400 text-yellow-400"
+                    : "text-gray-300"
+                }`}
+              />
+            ))}
+            <span className="text-sm text-muted-foreground">
+              ({product.reviews} reviews)
+            </span>
           </div>
         </div>
+
+        <p className="text-lg text-muted-foreground">{product.description}</p>
+
+        <div className="flex gap-4">
+          <Button size="lg" className="w-full">
+            <ShoppingCart className="mr-2 h-5 w-5" />
+            Add to Cart
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={() => setShowManager(true)}
+          >
+            Manage Product
+          </Button>
+        </div>
+
+        <Tabs defaultValue="specs" className="mt-8">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="specs">Specifications</TabsTrigger>
+            <TabsTrigger value="info">Information</TabsTrigger>
+            <TabsTrigger value="prices">Compare Prices</TabsTrigger>
+          </TabsList>
+          <TabsContent value="specs" className="mt-4">
+            <Card className="p-6">
+            <dl className="divide-y divide-border">
+                      {renderNestedProperties(
+                        // Filter out common fields and only show specifics
+                        Object.fromEntries(Object.entries(product).filter(([key]) => !commonFields.includes(key)))
+                      )}
+              </dl>
+            </Card>
+          </TabsContent>
+          <TabsContent value="info" className="mt-4">
+            <Card className="p-6">
+              <div className="prose prose-neutral dark:prose-invert">
+                {product.additionalInfo}
+              </div>
+            </Card>
+          </TabsContent>
+          <TabsContent value="prices" className="mt-4">
+          {prices.length > 0 ? (
+            <div className="grid gap-4">
+               {prices.map((price, i) => (
+              
+                <Card key={i} className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-semibold">{price.name}</h3>
+                      <p className="text-2xl font-bold">${price.price}</p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {price.explain}
+                      </p>
+                    </div>
+                    <Button asChild>
+                      <a
+                        href={price.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center"
+                      >
+                        Visit Site
+                        <ExternalLink className="ml-2 h-4 w-4" />
+                      </a>
+                    </Button>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <p>No prices available for this product.</p>
+          )}
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
+
+    {/* {showManager && (
+      <ProductManager
+        product={product}
+        onClose={() => setShowManager(false)}
+        onSave={(updatedProduct) => {
+          setProduct(updatedProduct);
+          setShowManager(false);
+        }}
+      />
+    )} */}
+  </div>
+</div>
+
   );
 }

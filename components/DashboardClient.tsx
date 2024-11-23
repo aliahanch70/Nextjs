@@ -285,7 +285,7 @@ export default function DashboardClient({ user }: DashboardClientProps) {
 
   return (
     <div className="min-h-screen flex">
-      <Layout user={user} children={undefined} />
+      <Layout user={user}  ></Layout>
 
       <div className="flex-1 bg-white dark:bg-gray-900 p-8">
         {user ? (

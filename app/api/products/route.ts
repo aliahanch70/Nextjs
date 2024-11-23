@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import axios from 'axios';
-import cheerio from 'cheerio';
 
 // Path to your JSON file storing the products
 const productsFilePath = path.join(process.cwd(), '/public/products.json');
@@ -83,7 +82,13 @@ export async function PUT(req: Request) {
     return NextResponse.json({ message: 'Product updated', product: products[index] }, { status: 200 });
   } catch (error: any) {
     console.error(error); // Log the error for debugging
-    return NextResponse.json({ message: 'Error updating product', error: error.message }, { status: 500 });
+    return NextResponse.json(
+      {
+        message: 'Error uploading file',
+        error: error instanceof Error ? error.message : 'Unknown error',
+      },
+      { status: 500 }
+    );
   }
 }
 

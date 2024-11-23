@@ -12,7 +12,7 @@ export async function POST(req: Request) {
 
     // Read existing prices
     const pricesData = await fs.readFile(PRICE_FILE_PATH, 'utf-8');
-    let existingPrices = JSON.parse(pricesData);
+    const existingPrices = JSON.parse(pricesData);
 
     // Update prices
     pricesToUpdate.forEach((updatedPrice: any) => {

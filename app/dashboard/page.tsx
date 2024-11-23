@@ -29,7 +29,7 @@ export default function Dashboard() {
   // Render "Loading..." if the user data is not available
   if (!user) {
     return (<div className="min-h-screen flex">
-    <Layout user={user} children={undefined}  />
+    <Layout user={user}  > </Layout>
 
     {/* Main Content */}
     <div className="flex-1 bg-white dark:bg-gray-900 p-8">
@@ -48,7 +48,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen flex">
-      <Layout user={user} children={undefined} />
+      <Layout user={user}><p></p></Layout>
 
       {/* Main Content */}
       <div className="flex-1 bg-white dark:bg-gray-900 p-8">

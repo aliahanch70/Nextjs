@@ -5,6 +5,18 @@ import { SunIcon, MoonIcon, ShoppingCartIcon, Bars3Icon } from '@heroicons/react
 import Link from 'next/link';
 import { useCart } from '../context/CartContext';
 import { usePathname, useRouter } from 'next/navigation';
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuItemOption,
+  MenuGroup,
+  MenuOptionGroup,
+  MenuDivider,
+} from '@chakra-ui/react'
+import { Button } from '@/components/ui/button'; // Add this import statement to resolve the issue
+
 
 interface Product {
   id: number;
@@ -135,16 +147,18 @@ const Navbar = () => {
         {/* Left Section - Home and Category Dropdown for Desktop */}
         <div className="hidden md:flex items-center space-x-4">
           <a href="/" className="text-gray-900 dark:text-white font-semibold">Home</a>
-          <div className="relative group">
-            <button className="text-gray-900 dark:text-white font-semibold">
-              Categories
-            </button>
-            <div className="absolute mt-2 hidden group-hover:block bg-white dark:bg-gray-800 shadow-lg rounded-md py-2 w-48 border-slate-100">
-              <a href="/category/electronics" className="block px-4 py-2 text-gray-900 dark:text-white">Electronics</a>
-              <a href="/category/fashion" className="block px-4 py-2 text-gray-900 dark:text-white">Fashion</a>
-              {/* Add more categories as needed */}
-            </div>
-          </div>
+          <Menu >
+            <MenuButton as={Button}>
+              Categury
+            </MenuButton>
+            <MenuList>
+              <MenuItem>Fashion</MenuItem>
+              <MenuItem>Electronic</MenuItem>
+              <MenuItem>Mark as Draft</MenuItem>
+              <MenuItem>Delete</MenuItem>
+              <MenuItem>Attend a Workshop</MenuItem>
+            </MenuList>
+          </Menu>
         </div>
 
         {/* Center Section - Search Bar */}
