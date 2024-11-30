@@ -281,7 +281,7 @@ const Navbar = () => {
                   className="mt-4 block w-full text-center bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
                   onClick={async (e) => {
                     e.stopPropagation();
-                    await router.push('/cart', undefined, { shallow: true });
+                    await router.replace('/cart', undefined);
                     setIsRightSidebarOpen(true);
                   }}
                 >

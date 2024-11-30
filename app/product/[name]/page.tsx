@@ -20,17 +20,46 @@ import { ExternalLink, ShoppingCart, Star } from "lucide-react";
 
 // import ProductManager from "@/components/ProductManager";
 
-interface Product {
+// interface Product {
+//   id: number;
+//   name: string;
+//   price: number;
+//   image: string;
+//   category: string;
+//   description?: string;
+//   views: number;
+//   material?: string; // فیلد اختیاری
+//   sizesAvailable: string[];
+//   colorsAvailable: string[];
+//   careInstructions?: string; // فیلد اختیاری
+//   stock?: number; // فیلد اختیاری
+//   ramOptions?: { size: string; price: number }[]; // فیلد اختیاری
+//   [key: string]: any; // Allow for additional properties
+  
+// }
+
+interface Price {
+  priceId: string;
+  price: number;
+  // other fields...
+}
+
+type Product = {
   id: number;
   name: string;
   price: number;
   image: string;
+  views: number;
   category: string;
   description?: string;
-  stock: number;
-  views: number;
-  [key: string]: any; // Allow for additional properties
-}
+  material?: string; // اختیاری
+  sizesAvailable?: string[]; // اختیاری
+  colorsAvailable?: string[];
+  careInstructions?: string; // اختیاری
+  stock?: number; // اختیاری
+  ramOptions?: { size: string; price: number }[]; // اختیاری
+  [key: string]: any; // انعطاف‌پذیری بیشتر
+};
 
 export default function ProductPage() {
   const { name } = useParams();
@@ -78,38 +107,48 @@ export default function ProductPage() {
 
   const handleAddToCart = (product: Product) => {
     const updatedProduct = { ...product };
-
-    const hasOptions = Object.keys(product).some(key => key.endsWith('Available') || key.endsWith('Options'));
-
+  
+    const hasOptions = Object.keys(product).some(key => 
+      key.endsWith('Available') || key.endsWith('Options')
+    );
+  
     if (hasOptions) {
       // Update price for options with different prices
       Object.entries(selectedOptions).forEach(([optionName, selectedValue]) => {
         const optionKey = optionName + 'Options';
         if (product[optionKey] && Array.isArray(product[optionKey])) {
-          const selectedOption = product[optionKey].find((option: any) => option.size === selectedValue);
+          const selectedOption = product[optionKey].find(
+            (option: any) => option.size === selectedValue
+          );
           if (selectedOption && selectedOption.price) {
             updatedProduct.price = selectedOption.price;
           }
         }
       });
-      addToCart(updatedProduct, selectedOptions);
-      console.log('Added to cart:', { ...updatedProduct, selectedOptions });
+      
+      // Combine product and options into a single object
+      const productWithOptions = {
+        ...updatedProduct,
+        selectedOptions
+      };
+      
+      addToCart(productWithOptions);
     } else {
-      addToCart(updatedProduct, {});
-      console.log('Added to cart:', updatedProduct);
+      const productWithOptions = {
+        ...updatedProduct,
+        selectedOptions: {}
+      };
+      addToCart(productWithOptions);
     }
     
-    // Show success message
     setShowSuccessMessage(true);
-    
-    // Hide success message after 2 seconds
     setTimeout(() => {
       setShowSuccessMessage(false);
-    }, 2000);
-
-    // Reset selected options
+    }, );
+  
     setSelectedOptions({});
   };
+  
 
   const generateOptionSelectors = () => {
     if (!product) return null;
@@ -178,17 +217,31 @@ export default function ProductPage() {
   useEffect(() => {
     const fetchProduct = async () => {
       setLoading(true);
+  
       const decodedName = decodeURIComponent(Array.isArray(name) ? name[0] : name);
-      const foundProduct = products.find((p: Product) => {
-        const productNameNormalized = p.name.toLowerCase().replace(/ /g, '-');
-        return decodedName.includes(productNameNormalized) && decodedName.includes(p.id.toString());
+  
+      const foundProduct = products.find((p) => {
+        const productNameNormalized = p.name?.toLowerCase()?.replace(/ /g, '-') || '';
+        return decodedName === `${productNameNormalized}-${p.id}`;
       });
-
+  
       if (foundProduct) {
-        setProduct(foundProduct);
-        setViewCount(foundProduct.views);
-
-        // Increment view count
+        const normalizedProduct: Product = {
+          ...foundProduct,
+          stock: foundProduct.stock ?? 0,
+          sizesAvailable: foundProduct.sizesAvailable ?? [],
+          views: foundProduct.views || 0,
+        };
+        
+        setProduct(normalizedProduct);
+        setViewCount(foundProduct.views ?? 0);
+        // ... rest of the code
+      
+      
+  
+        setProduct(normalizedProduct);
+        setViewCount(foundProduct.views ?? 0);
+  
         try {
           const response = await fetch(`/api/products/${foundProduct.id}/view`, { method: 'POST' });
           if (response.ok) {
@@ -198,13 +251,19 @@ export default function ProductPage() {
         } catch (error) {
           console.error('Failed to update view count:', error);
         }
+      } else {
+        console.error('Product not found');
       }
-
+  
       setLoading(false);
     };
-
+  
     fetchProduct();
-  }, [name]);
+  }, [name, products]);
+  
+  
+  
+  
 
   if (loading) {
     return <div className="text-center p-8">Loading...</div>;
@@ -230,7 +289,7 @@ export default function ProductPage() {
             // Recursively render nested objects
             renderNestedProperties(value, level + 1)
           ) : (
-            <span className="text-gray-600 dark:text-gray-400">{value.toString()}</span>
+            <span className="text-gray-600 dark:text-gray-400">{value ? value.toString(): null}</span>
           )}
         </div>
       );
@@ -262,7 +321,11 @@ export default function ProductPage() {
     }
   };
 
-  const handleSavePrice = async (editedPrice: any) => {
+  interface EditedPrice extends Price {
+    // other fields specific to edited price...
+  }
+
+  const handleSavePrice = async (editedPrice: EditedPrice) => {
     try {
       const response = await fetch(`/api/prices/${editedPrice.priceId}`, {
         method: 'PUT',
@@ -271,18 +334,20 @@ export default function ProductPage() {
         },
         body: JSON.stringify(editedPrice),
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to save price');
       }
-
-      const updatedPrice = await response.json();
-      
+  
+      const updatedPrice: Price = await response.json();
+  
       // Update prices state
-      setPrices(currentPrices => currentPrices.map(p => p.priceId === editedPrice.priceId ? updatedPrice : p));
-
+      setPrices((currentPrices: Price[]) =>
+        currentPrices.map(p => p.priceId === editedPrice.priceId ? updatedPrice : p)
+      );
+  
       // Update price.json file
-      const allPrices = await fetch('/price.json').then(res => res.json());
+      const allPrices: Price[] = await fetch('/price.json').then(res => res.json());
       const updatedAllPrices = allPrices.map(p => p.priceId === editedPrice.priceId ? updatedPrice : p);
       await fetch('/api/updatePrices', {
         method: 'POST',
@@ -291,7 +356,7 @@ export default function ProductPage() {
         },
         body: JSON.stringify(updatedAllPrices),
       });
-
+  
       setShowEditModal(false);
     } catch (error) {
       console.error('Error saving price:', error);
@@ -534,7 +599,7 @@ export default function ProductPage() {
           <Button
             variant="outline"
             size="lg"
-            onClick={() => setShowManager(true)}
+            // onClick={() => setShowManager(true)}
           >
             Manage Product
           </Button>

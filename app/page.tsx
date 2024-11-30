@@ -153,7 +153,7 @@ const Shop = () => {
             setDisplayedProducts((prev) => [...prev, ...nextProducts]);
             setPage((prev) => prev + 1);
             setIsLoadingMore(false);
-          }, 100);
+          }, 0);
         }
       },
       { threshold: 0.1 }

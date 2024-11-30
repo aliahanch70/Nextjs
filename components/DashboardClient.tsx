@@ -4,21 +4,35 @@ import { useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import CategorySelector from './CategorySelector';
 import PriceSlider from './Slider';
+import Image from 'next/image'
+
 
 interface User {
   username: string;
   role: string;
 }
 
+interface Option {
+  size: string;
+  price: number;
+}
+
+interface OptionType {
+  name: string;
+  options: Option[];
+}
+
 interface Product {
   id: number;
   name: string;
   price: number;
-  image: string;
+  image: string | null;
   category: string;
   owner: string;
   specific?: string;
   optionTypes?: ProductOptionType[];
+  [key: string]: any; // اضافه کردن Index Signature
+
 }
 
 interface ProductOptionType {
@@ -30,6 +44,26 @@ interface ProductOption {
   size: string;
   price: number;
 }
+
+const categories = [
+  { id: 1, name: 'electronics' },
+  { id: 2, name: 'fashion' },
+  { id: 3, name: 'Home & Kitchen' },
+  { id: 4, name: 'Sports' },
+  { id: 5, name: 'Books' },
+];
+
+interface Category {
+  id: number;
+  name: string;
+}
+
+interface CategorySelectorProps {
+  value: Category | null; // مقدار انتخاب‌شده
+  onChange: (category: Category | null) => void; // تابع برای مدیریت تغییرات
+}
+
+
 
 const initialNewProduct = { name: '', price: 0, category: '', image: '', specific: '', options: [] };
 
@@ -129,7 +163,7 @@ export default function DashboardClient({ user }: DashboardClientProps) {
     const imageUrl = imageFile ? await uploadImage() : editingProduct.image;
     
     // Create the new option structure
-    const newOptions = {};
+    const newOptions: Record<string, Option[]> = {}; // تایپ دینامیک برای newOptions
     if (editingProduct.optionTypes) {
       editingProduct.optionTypes.forEach(optionType => {
         const key = `${optionType.name.toLowerCase()}Options`;
@@ -203,7 +237,7 @@ export default function DashboardClient({ user }: DashboardClientProps) {
     updatedOptionTypes[index] = { ...updatedOptionTypes[index], [field]: value };
     const newName = updatedOptionTypes[index].name.toLowerCase();
     
-    const updatedProduct = { ...editingProduct, optionTypes: updatedOptionTypes };
+    const updatedProduct = { ...editingProduct } as Record<string, any>;
     if (field === 'name' && oldName !== newName) {
       const oldKey = `${oldName}Options`;
       const newKey = `${newName}Options`;
@@ -211,7 +245,7 @@ export default function DashboardClient({ user }: DashboardClientProps) {
       delete updatedProduct[oldKey];
     }
     
-    setEditingProduct(updatedProduct);
+    setEditingProduct(updatedProduct as Product);
   };
 
   const handleUpdateOption = (optionTypeIndex: number, optionIndex: number, field: keyof ProductOption, value: string | number) => {
@@ -237,7 +271,7 @@ export default function DashboardClient({ user }: DashboardClientProps) {
     const deletedOptionType = updatedOptionTypes[index];
     updatedOptionTypes.splice(index, 1);
     const updatedProduct = { ...editingProduct, optionTypes: updatedOptionTypes };
-    delete updatedProduct[`${deletedOptionType.name.toLowerCase()}Options`];
+    delete (updatedProduct as Record<string, any>)[`${deletedOptionType.name.toLowerCase()}Options`];
     setEditingProduct(updatedProduct);
   };
 
@@ -255,9 +289,15 @@ export default function DashboardClient({ user }: DashboardClientProps) {
     });
   };
 
-  const handleCategoryChange = (category: string) => {
-    setNewProduct({ ...newProduct, category });
+  const handleCategoryChange = (category: Category | null) => {
+    if (category) {
+      setNewProduct((prev) => ({
+        ...prev,
+        category: category.name, // یا هر ویژگی موردنیاز از Category
+      }));
+    }
   };
+  
 
   const handleDeleteProduct = async (id: number) => {
     try {
@@ -283,9 +323,10 @@ export default function DashboardClient({ user }: DashboardClientProps) {
     setEditingProduct(product);
   };
 
+
   return (
     <div className="min-h-screen flex">
-      <Layout user={user}  ></Layout>
+      <Layout user={user}  ><></></Layout>
 
       <div className="flex-1 bg-white dark:bg-gray-900 p-8">
         {user ? (
@@ -326,7 +367,7 @@ export default function DashboardClient({ user }: DashboardClientProps) {
                             <div key={index} className="mt-2">
                               <strong>{optionType.name}:</strong>
                               <ul className="list-disc list-inside">
-                                {product[optionKey] && product[optionKey].map((option, optIndex) => (
+                              {product[optionKey] && (product[optionKey] as Array<{ size: string; price: number }>).map((option, optIndex) => (
                                   <li key={optIndex}>
                                     {option.size} - ${option.price}
                                   </li>
@@ -337,7 +378,7 @@ export default function DashboardClient({ user }: DashboardClientProps) {
                         })}
                       </div>
                     </div>
-                    <img src={product.image} alt={product.name} className="w-24 h-24 object-cover rounded" />
+                    <Image src={product.image || 'default-product.png'} alt={product.name} className="w-24 h-24 object-cover rounded" />
                   </div>
                   <div className="mt-2">
                     <button
@@ -376,7 +417,7 @@ export default function DashboardClient({ user }: DashboardClientProps) {
               />
               <div className="mt-2">
               <CategorySelector
-                value={newProduct.category}
+                value={categories.find((cat) => cat.name === newProduct.category) || null}
                 onChange={handleCategoryChange}
               />
               </div>

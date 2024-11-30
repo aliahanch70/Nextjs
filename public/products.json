@@ -22,7 +22,7 @@
     "stock": 14,
     "rating": 4.5,
     "specific": "This is a specific product that only exists in the database.",
-    "views": 2535
+    "views": 2588
   },
   {
     "id": 3,
@@ -56,7 +56,7 @@
     "os": "iOS 15",
     "stock": 25,
     "rating": 4.8,
-    "views": 2365
+    "views": 2369
   },
   {
     "id": 4,

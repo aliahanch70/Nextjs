@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from "./Navbar";
 import { Progress } from "@chakra-ui/react";
 
-export default function ClientWrapper({ children  }) {
+export default function ClientWrapper({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
