@@ -9,7 +9,7 @@ import products from '../../../public/products.json';
 import priceData from '../../../public/price.json';
 import { Callout } from '@/components/Callout';
 import { useCart } from '@/context/CartContext';
-import { useCurrentTime } from '@/hooks/useCurrentTime';
+
 import ProductNotFind from '@/components/ProductNotFind';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -73,8 +73,7 @@ export default function ProductPage() {
   const [editingPrice, setEditingPrice] = useState<any>(null);
 
   const { addToCart } = useCart();
-  const currentTime = useCurrentTime();
-
+  
   const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
@@ -144,7 +143,7 @@ export default function ProductPage() {
     setShowSuccessMessage(true);
     setTimeout(() => {
       setShowSuccessMessage(false);
-    }, );
+    }, 100);
   
     setSelectedOptions({});
   };
@@ -218,6 +217,12 @@ export default function ProductPage() {
     const fetchProduct = async () => {
       setLoading(true);
   
+      if (!name) {
+        console.error('Name is undefined');
+        setLoading(false);
+        return;
+      }
+  
       const decodedName = decodeURIComponent(Array.isArray(name) ? name[0] : name);
   
       const foundProduct = products.find((p) => {
@@ -232,12 +237,6 @@ export default function ProductPage() {
           sizesAvailable: foundProduct.sizesAvailable ?? [],
           views: foundProduct.views || 0,
         };
-        
-        setProduct(normalizedProduct);
-        setViewCount(foundProduct.views ?? 0);
-        // ... rest of the code
-      
-      
   
         setProduct(normalizedProduct);
         setViewCount(foundProduct.views ?? 0);
@@ -260,6 +259,7 @@ export default function ProductPage() {
   
     fetchProduct();
   }, [name, products]);
+  
   
   
   

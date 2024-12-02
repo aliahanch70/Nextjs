@@ -22,7 +22,7 @@
     "stock": 14,
     "rating": 4.5,
     "specific": "This is a specific product that only exists in the database.",
-    "views": 2588
+    "views": 2653
   },
   {
     "id": 3,
@@ -56,7 +56,7 @@
     "os": "iOS 15",
     "stock": 25,
     "rating": 4.8,
-    "views": 2369
+    "views": 2382
   },
   {
     "id": 4,
@@ -83,7 +83,7 @@
     "careInstructions": "Machine wash cold, tumble dry low. Do not bleach.",
     "stock": 75,
     "rating": 4.2,
-    "views": 2358
+    "views": 2424
   },
   {
     "id": 5,
@@ -189,7 +189,7 @@
     "os": "One UI 5.1 based on Android 13",
     "stock": 30,
     "rating": 4.5,
-    "views": 2354
+    "views": 2401
   },
   {
     "id": 10,
@@ -363,7 +363,7 @@
     "specific": "",
     "options": [],
     "owner": "aliahanch28",
-    "views": null
+    "views": 61
   },
   {
     "id": 16,
@@ -374,7 +374,7 @@
     "specific": "",
     "options": [],
     "owner": "aliahanch28",
-    "views": null
+    "views": 20
   },
   {
     "id": 17,

@@ -4,12 +4,8 @@ export function useCurrentTime() {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
-    const updateTime = () => {
-      setCurrentTime(new Date());
-    };
-    updateTime();
-    const timer = setInterval(updateTime, 60000);
-    return () => clearInterval(timer);
+    // Only set initial time, no interval needed for this use case
+    setCurrentTime(new Date());
   }, []);
 
   return currentTime;
