@@ -1,0 +1,38 @@
+{
+  "products": [
+    {
+      "id": "1",
+      "name": "Professional Camera XR-200",
+      "description": "High-end professional camera with advanced features for photography enthusiasts",
+      "price": 1299.99,
+      "image": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1000",
+      "specifications": [
+        "24.2MP Full-Frame Sensor",
+        "4K Video Recording",
+        "5-Axis Image Stabilization",
+        "Weather-Sealed Body",
+        "Dual SD Card Slots"
+      ],
+      "comparisons": [
+        {
+          "website": "PhotoPro",
+          "price": 1399.99,
+          "features": "Includes additional battery pack",
+          "url": "https://photopro.com/xr200"
+        },
+        {
+          "website": "CameraWorld",
+          "price": 1299.99,
+          "features": "Free photography course included",
+          "url": "https://cameraworld.com/xr200"
+        },
+        {
+          "website": "DigitalHub",
+          "price": 1349.99,
+          "features": "Extended 3-year warranty",
+          "url": "https://digitalhub.com/xr200"
+        }
+      ]
+    }
+  ]
+}
